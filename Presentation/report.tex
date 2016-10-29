@@ -2,6 +2,7 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage{amssymb}
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
 
 \usetheme[navigation]{UMONS}
 %\usetheme[navigation, no-subsection, no-totalframenumber]{UMONS}
@@ -12,7 +13,7 @@
 \title{Bandwidth estimation : metrics, measurement techniques, and tools}
 \author{M. Lempereur \\
 J. Gheysen}
-\institute[(Math)]{%
+\institute[(Info)]{%
   Département d'Informatique\\
   Université de Mons
   \\[2ex]
@@ -30,46 +31,88 @@ J. Gheysen}
   \tableofcontents
 \end{frame}
 
+\section{Introduction}
+\begin{frame}{Introduction}
 
-%\section{Introduction}
-%\subsection{Etat de l'art}
-%\begin{frame}
-%  \frametitle{Introduction}
-%
-%  \begin{itemize}
-%  \item Niveau 1 d'\texttt{itemize}
-%    \begin{itemize}
-%    \item Niveau 2 d'\texttt{itemize}
-%    \item Niveau 2 d'\texttt{itemize}
-%    \end{itemize}
-%  \item Niveau 1 d'\texttt{itemize}
-%  \end{itemize}
-%\end{frame}
-%
-%\subsection{Deuxième sous-section}
-%\begin{frame}
-%  \frametitle{Second transparent}
-%
-%  \begin{theorem}
-%    Soit $f : \IR \to \IR$ une fonction continue et coercive.  Alors
-%    $f$ possède un minimum.
-%  \end{theorem}
-%\end{frame}
-%
-%
-%\section{Deuxième section}
-%\begin{frame}
-%  \frametitle{Second transparent}
-%
-%  \begin{enumerate}
-%  \item Niveau 1 d'\texttt{enumerate}
-%    \begin{enumerate}
-%    \item Niveau 2 d'\texttt{enumerate}
-%    \item Niveau 2 d'\texttt{enumerate}
-%    \end{enumerate}
-%  \item Niveau 1 d'\texttt{enumerate}
-%  \end{enumerate}
-%\end{frame}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Dans l'utilisation quotidienne beaucoup de termes sont
+%confondus, le but ici est de formaliser la définition autour
+%de la vitesse d'une connection et de la "bande passante".
+%D'apporter des mesures précises et de faire le point sur les
+%technologies existantes à ce niveau. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Introduction}{Vocabulaire 1/2}
+	\begin{figure}
+   		\begin{minipage}[c]{.46\linewidth}
+   			\includegraphics[scale=0.23]{capacity.JPG}
+   			\caption{Capacité}
+   		\end{minipage} \hfill
+   		\begin{minipage}[c]{.46\linewidth}
+      		\includegraphics[scale=0.18]{bande_passante.jpg}
+      		\caption{Bande Passante}
+   		\end{minipage}
+   		\begin{minipage}[c]{.46\linewidth}
+   			\includegraphics[scale=0.2]{tcp.png}
+   			\caption{Bulk-Transfert-Capacity}
+   		\end{minipage} \hfill
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Introduction}{Vocabulaire 2/2}
+\begin{itemize}
+	\item Différenciation entre liens de la couche données (1) et couche IP(2).
+	\begin{enumerate}
+		\item Segment : Lien physique point à point. %Etendre aux autres points dans l'article ?
+		\item Hop (saut) : Consiste en un ensemble de segments. %Connectés à travers switchs/bridges...
+	\end{enumerate}
+	\item Chemin end-to-end : Lie un hôte à une source via une suite de hops.
+	\item Que mesurer ? Dans quelle situation ? 
+	\begin{itemize}
+		\item Lien unique (hop) : Capacité, Bande Passante.
+		\item Chemin : Capacité, Bande Passante, Bulk-Transfert-Capacity.
+	\end{itemize}
+\end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Tout d'abord != entre lien et chemin (= ensemble de liens)
+%Ici nous utilisons lien pour donner définition globale.
+%Capacité : Valeur maximale du flux pouvant traverser un lien,
+%càd quantité maximale de bits pouvant transiter à travers
+%le lien par unité de temps. 
+%Bande passante disponible : Capacité du lien non utilisée,
+%alors utilisable afin d'écouler du traffic. 
+%BTC : Représente le débit atteignable par une seule 
+%connexion TCP. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Données mesurées}
+\subsection{Capacité}
+\begin{frame}{Capacité}
+
+\end{frame}
+\subsection{Bande Passante}
+\begin{frame}{Bande Passante}
+
+\end{frame}
+\subsection{Bulk-Transfert-Capacity}
+\begin{frame}{Bulk-Transfert-Capacity (BTC)}
+
+\end{frame}
+
+\section{Techniques de mesure}
+\begin{frame}{Techniques de mesure}
+
+\end{frame}
+
+\section{Taxonomie des outils de mesure}
+\begin{frame}{Taxonomie des outils de mesure}
+
+\end{frame}
 
 
 \end{document}
