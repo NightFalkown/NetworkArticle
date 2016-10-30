@@ -36,13 +36,13 @@ J. Gheysen}
 
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Dans l'utilisation quotidienne beaucoup de termes sont
 %confondus, le but ici est de formaliser la définition autour
 %de la vitesse d'une connection et de la "bande passante".
 %D'apporter des mesures précises et de faire le point sur les
 %technologies existantes à ce niveau. 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}{Introduction}{Vocabulaire 1/2}
 	\begin{figure}
@@ -77,8 +77,9 @@ J. Gheysen}
 \end{itemize}
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Tout d'abord != entre lien et chemin (= ensemble de liens)
+%ATTENTION : UN SEGMENT est en réalité une FRAME (layer 2).
 %Ici nous utilisons lien pour donner définition globale.
 %Capacité : Valeur maximale du flux pouvant traverser un lien,
 %càd quantité maximale de bits pouvant transiter à travers
@@ -87,14 +88,56 @@ J. Gheysen}
 %alors utilisable afin d'écouler du traffic. 
 %BTC : Représente le débit atteignable par une seule 
 %connexion TCP. 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 \section{Données mesurées}
 \subsection{Capacité}
 \begin{frame}{Capacité}
-
+	Posons :
+	\begin{itemize}
+	\item $C_{L2}$ la capacité nominale du \textbf{segment},
+	\item $L_{L3}$ la taille du paquet IP, 
+	\item $H_{L2}$ l'overhead de la couche 2. 
+	\end{itemize}
+	\begin{block}{Temps de transmission : $\Delta_{L3}$}
+		$$\Delta_{L3} = \frac{L_{L3} + H_{L2}}{C_{L2}}$$
+	\end{block}
+	\begin{block}{Capacité couche IP:  $C_{L3}$}
+		$$C_{L3} = \frac{L_{L3}}{\Delta_{L3}} = \frac{L_{L3}}{\frac{L_{L3}+H_{L2}}{C_{L2}}} = C_{L2} \frac{1}{1+\frac{H_{L2}}{L_{L3}}}$$
+	\end{block}
 \end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Bien insister sur le fait qu'on regarde le paquet IP au 
+%travers d'un SEGMENT. 
+%La capacité C_L3 est donc directement proportionnelle à la 
+%capacité de la couche d'en dessous et inversément proportionnelle
+%au rapport Overhead/Longueur (Plus ce rapport est grand plus la 
+%capacité est réduite. Ce dernier dépend du MTU (Maximum Transfert
+%Unit) d'un paquet de la couche IP. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+	\begin{alertblock}{Remarque}
+		Le rapport $\frac{H_{L2}}{L_{L3}}$ est borné par le MTU (Maximum Transmission Unit).
+	\end{alertblock}
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.25]{schema1.PNG}
+\caption{Rapport des capacités d'un segment délivré à la couche IP en fonction de sa taille.}
+\end{figure}
+		\begin{block}{Capacité sur un chemin}
+		$$C = \min\limits_{i=1,...,H} C_{i}$$
+		\end{block}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%En ce qui concerne le MTU : il définit un overhead fixe pour 
+%une taille de paquet maximum => Remplir un max les paquets.
+%Appelés datagrammes IP.
+%Plus le paquet sera grand, plus le rapport sera petit et avantageux.   
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \subsection{Bande Passante}
 \begin{frame}{Bande Passante}
 
