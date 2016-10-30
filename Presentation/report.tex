@@ -65,14 +65,16 @@ J. Gheysen}
 \begin{itemize}
 	\item Différenciation entre liens de la couche données (1) et couche IP(2).
 	\begin{enumerate}
-		\item Segment : Lien physique point à point. %Etendre aux autres points dans l'article ?
-		\item Hop (saut) : Consiste en un ensemble de segments. %Connectés à travers switchs/bridges...
+		\item \textbf{Segment} : Lien physique point à point. %Etendre aux autres points dans l'article ?
+		\item \textbf{Hop} (saut) : Consiste en un ensemble de segments. %Connectés à travers switchs/bridges...
 	\end{enumerate}
-	\item Chemin end-to-end : Lie un hôte à une source via une suite de hops.
+	\vspace{10pt}
+	\item \textbf{Chemin end-to-end} : Lie un hôte à une source via une suite de hops.
+	\vspace{10pt}
 	\item Que mesurer ? Dans quelle situation ? 
 	\begin{itemize}
-		\item Lien unique (hop) : Capacité, Bande Passante.
-		\item Chemin : Capacité, Bande Passante, Bulk-Transfert-Capacity.
+		\item \textbf{Lien unique (hop)} : Capacité, Bande Passante.
+		\item \textbf{Chemin} : Capacité, Bande Passante, Bulk-Transfert-Capacity.
 	\end{itemize}
 \end{itemize}
 \end{frame}
@@ -189,8 +191,27 @@ J. Gheysen}
 
 \subsection{Bulk-Transfert-Capacity}
 \begin{frame}{Bulk-Transfert-Capacity (BTC)}
-
+	\begin{alertblock}{Définition}
+		Débit atteignable par une unique connection TCP en prenant compte du contrôle de congestion.
+	\end{alertblock}
+	Éléments influençant le flux TCP : 
+	\begin{itemize}
+		\item Taille des paquets transférés,
+		\item Trafic croisé avec d'autres connections,
+		\item Taille des buffers des sockets,
+		\item Taille de la fenêtre de congestion,
+		\item ...
+	\end{itemize}
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Représente 90% du trafic
+%Beaucoup de facteurs influençant : transfert size, cross-traffic, 
+%competiting TCP connections, TCP socket buffer size, congestion, 
+%variations liées à l'implémentation,...
+%Pour une page Web : congestion window, RTT, slow-start mechanism
+%TODO Regarder avec l'histoire de capacité C/2. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Techniques de mesure}
 \begin{frame}{Techniques de mesure}
