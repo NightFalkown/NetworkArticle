@@ -140,8 +140,53 @@ J. Gheysen}
 
 \subsection{Bande Passante}
 \begin{frame}{Bande Passante}
-
+	\begin{figure}[hbtp]
+		\centering
+		\includegraphics[scale=0.42]{schema2.PNG}
+		\caption{Utilisation instantanée d'un lien durant un temps (0,T)}
+	\end{figure}
+	\begin{itemize}
+		\item Utilisation du lien non-constante,
+		\item Posons $u_i$ l'utilisation moyenne. 
+	\end{itemize}
+	\begin{block}{Bande passante disponible en moyenne : $A_{i}$}
+		$$ A_i = (1 - u_i) C_i $$
+	\end{block}
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%A un temps donné, le lien transmet un paquet à sa full capacité (1) ou 
+%est inutilisé. La formule donnée pour A_i comprend la bande passante 
+%pour un seul hop i. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+	\begin{block}{Bande passante sur un chemin}
+		$$A = \min\limits_{i=1,...,H} A_{i}$$
+	\end{block}
+	\begin{alertblock}{Remarque}
+		Bande passante et capacité ne sont pas toujours limitées sur le même lien. 
+	\end{alertblock}
+	\begin{figure}[hbtp]
+		\centering
+		\includegraphics[scale=0.42]{schema3.PNG}
+		\caption{Exemple de trafic pour un chemin de 3 hops}
+	\end{figure}
+	
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%La bande passante disponible sur un chemin est le minimum de celle 
+%dispo sur tous les liens de son chemin. 
+%Dans l'exemple, la limitation se fait en 1 pour la capacité et en 3
+%pour la bande passsante. 
+%Ces calculs supposent que l'utilisation des liens est constante,
+%cette assomption reste raisonnable pour des intervalles de temps 
+%cours mais /!\ à la sporadicité et à la != diurne/nocturne, etc...
+%Or ce n'est pas le cas, il faut donc effectuer des mesures rapides
+%si on veut un aperçu en temps réel (utile pour certaines applis). 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \subsection{Bulk-Transfert-Capacity}
 \begin{frame}{Bulk-Transfert-Capacity (BTC)}
 
