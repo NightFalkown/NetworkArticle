@@ -1,5 +1,6 @@
 \documentclass[compress]{beamer}
 
+\usepackage{color}
 \usepackage[utf8]{inputenc}
 \usepackage{amssymb}
 \setbeamertemplate{caption}{\raggedright\insertcaption\par}
@@ -214,9 +215,126 @@ J. Gheysen}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Techniques de mesure}
-\begin{frame}{Techniques de mesure}
-
+\subsection{Variable Packet Size (VPS) probing}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Préliminaire : Pour toutes les techniques de mesure présentées, on 
+%suppose que la charge du trafic est stationnaire et que la  route
+%ne change pas.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Variable Packet Size (VPS) probing}{Principe}
+\begin{itemize}
+\item \textbf{But :}  Mesurer la {\color{red}capacité} de chaque saut le long d'un chemin.
+\item \textbf{Idée :}  Mesurer le {\color{red}RTT} (Round-Trip-Time) de la source jusque chaque saut.
+\item \textbf{Technique :} Envoyer des paquets tests avec des {\color{red}TTL} (Time-To-Live) calculés pour expirer à un saut particulier. 
+\end{itemize}
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Envoi de paquets avec TTL calculés pour arriver à un saut particulier.
+%TODO comment ? 
+%Réponse du hop avec message ICMP, de là on peut calculer le RTT.
+%TODO Faire schéma 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Variable Packet Size (VPS) probing}{Formalisation}
+	\begin{block}{Minimum RTT : $T_i$(L)}
+	$$T_{i}(L) = \alpha + \beta_{i}L \text{ où } \beta_i = \sum^{I}_{k=1} \frac{1}{C_k}$$
+	\end{block}
+\begin{itemize}
+	\item $\alpha$ : Délai de propagation jusqu'au saut i + délai de 	sérialisation et délai de propagation de la réponse ICMP.
+	\item $\beta_i$ : %TODO pente du RTT minimum au hop i ? Sérialisation delay ? 
+\end{itemize}
+
+\begin{block}{Capacité d'un saut i : $C_i$}
+	$$ C_i = \frac{1}{\beta_i - \beta_{i-1}} $$
+\end{block}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%RTT a trois composantes : 
+% > Délai sérialisation = temps pour mettre le paquet sur le lien
+% > Délai propagation = temps pour propager le paquet via le lien
+% > Délai d'attente = temps d'attente si jamais il y a contention 
+%(saturation) à l'entrée où à la sortie d'un lien. 
+%Dans les calculs on envoie pas mal de paquets espérant qu'un ne 
+%rencontrera pas de queuing delay. 
+%/!\ Erreurs importantes possibles s'il y a des store-forward 
+%layer 2 switches " %TODO voir plus en profondeur" introduisant
+%des délais de sérialisation. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Variable Packet Size (VPS) probing}{Résultats}
+	\begin{figure}[hbtp]
+		\centering
+		\includegraphics[scale=0.7]{schema4.png}
+		\caption{Mesures de RTT le long d'un chemin}
+	\end{figure}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%On peut voir sur ce schéma la mesure des RTT, minimum RTT et la 
+%droite %TODO "fittant le mieux l'évolution linéaire".
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Packet Pair/Train Dispersion (PPTD) probing}
+\begin{frame}{Packet Pair/Train Dispersion (PPTD) probing}{Principe 1/3}
+\begin{itemize}
+	\item \textbf{But :} Mesurer la {\color{red}capacité} sur l'entièreté d'un chemin. 
+	\item \textbf{Idée :} Envoyer des {\color{red}paires de paquets} et calculer la distance en temps (dispersion) entre le dernier bit de ces derniers. 
+	\begin{figure}[hbtp]
+		\centering
+		\includegraphics[scale=0.6]{schema5.png}
+		\caption{Dispersion d'une paire de paquets}
+	\end{figure}
+	\item Dispersion résultante d'un saut : $\Delta_{out} = max (\Delta_{in} , \frac{L}{C_i})$
+	\item Dispersion sur un chemin : $\Delta_R = \max\limits_{i=0,...,H} (\frac{L}{C_i}) = \frac{L}{min_{i=0,..,H}C_i} = \frac{L}{C}$
+\end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%La distance en temps entre les paquets est appelée dispersion.
+%En effet la dispersion sortante = max entre celle d'entrée et celle 
+%engendrée par le hop traversé. 
+%De la dernière formule on déduit que C = L/DeltaR.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Packet Pair/Train Dispersion (PPTD) probing}{Principe 2/3}
+\begin{itemize}
+	\item \textbf{Problème :} Il faut en réalité tenir compte du {\color{red}trafic} pouvant {\color{red}perturber} les mesures.
+	\item \textbf{Solution 1:} Envoyer un {\color{red}grand nombre} de paquet et établir des statistiques.
+	\item \textbf{Résultat :} Interprétations statistiques classiques offrent des résultats peu fiables. 
+	\begin{figure}[hbtp]
+		\centering
+		\includegraphics[scale=0.4]{schema6.png}
+		\caption{Histogramme de mesures de capacité de 1000 échantillons}
+	\end{figure}
+\end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Si question, qu'engendrent perturbations de trafic ? 
+% > Sous-estimation : Des paquets s'intercalent, augmentant la dispers.
+% > Sur-estimation : Le premier paquet est retardé et le second non. 
+% Exemple frappant sur l'histogramme, on voit que la capacité réelle de
+% 100Mps est sous-estimée (probablement à cause du trafic). 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Packet Pair/Train Dispersion (PPTD) probing}{Principe 3/3}
+\begin{itemize}
+	\item \textbf{Solution 2 :} Envoyer un {\color{red}train de N paquets}.
+	\begin{block}{Taux de dispersion}
+		$$ D = \frac{(N-1)L}{\Delta_R(N)}$$
+	\end{block}
+	Pour un chemin sans trafic : taux de dispersion = capacité.
+\end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%TODO Pourquoi (N-1) pour N paquets ? 
+%\DeltaR est la dispersion end-to-end du chemin.
+%Le cross traffic peut rendre D bcp plus << que C. 
+%TODO Terminer en rajoutant : l'exemple, la formule ? 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Taxonomie des outils de mesure}
 \begin{frame}{Taxonomie des outils de mesure}
@@ -229,4 +347,5 @@ J. Gheysen}
 %%% mode: latex
 %%% TeX-master: t
 %%% End: 
+\grid
 \grid
