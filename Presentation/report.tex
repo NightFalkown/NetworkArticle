@@ -264,7 +264,7 @@ J. Gheysen}
 	\end{block}
 \begin{itemize}
 	\item $\alpha$ : Délai de propagation jusqu'au saut i + délai de 	sérialisation et délai de propagation de la réponse ICMP.
-	\item $\beta_i$ : %TODO pente du RTT minimum au hop i ? Sérialisation delay ? 
+	\item $\beta_i$ : Pente du RTT minimum jusqu'au hop i. %TODO Meilleure explication souhaitée. 
 \end{itemize}
 
 \begin{block}{Capacité d'un saut i : $C_i$}
@@ -344,18 +344,32 @@ J. Gheysen}
 \begin{frame}{Packet Pair/Train Dispersion (PPTD) probing}{Principe 3/3}
 \begin{itemize}
 	\item \textbf{Solution 2 :} Envoyer un {\color{red}train de N paquets}.
-	\begin{block}{Taux de dispersion}
+\end{itemize}
+	\begin{block}{Taux de dispersion sans trafic extérieur}
 		$$ D = \frac{(N-1)L}{\Delta_R(N)}$$
 	\end{block}
-	Pour un chemin sans trafic : taux de dispersion = capacité.
-\end{itemize}
+Exemple :
+\begin{itemize}
+\item Chemin de deux hops avec $C_1 < C_0$
+\item {\color{red}Trafic extérieur} de taux $R_C < C_1 < C_0$ sur 2\textsuperscript{ème} lien
+\end{itemize} 
+\vspace{10pt}
+		$$ E[D] = \frac{(N-1)L}{\Delta_2} =  \frac{C_1}{1+\frac{R_0}{C_0}} < C_1$$
+
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%TODO Pourquoi (N-1) pour N paquets ? 
+%Pourquoi (N-1) pour N paquets ? On ne prend pas en compte le 1er paquet,
+%juste son dernier bit (ex avec deux paquets on ne prend que 1*L).
 %\DeltaR est la dispersion end-to-end du chemin.
+%Pour un chemin sans trafic : taux de dispersion = capacité.
 %Le cross traffic peut rendre D bcp plus << que C. 
-%TODO Terminer en rajoutant : l'exemple, la formule ? 
+%On remarque que le taux de dispersion < C_1 ce qui veut dire qu'on a 
+%perdu par rapport à la capacité initiale. 
+% %TODO Plus il y a de trafic moins il y a d'interférence ? 
+%Attention E[D] != de la bande passante. A < E[D] ? En effet :
+% A < E[D] < C1  <=> C1-R < E[D] < C1
+% %TODO Discuter des calculs pour D et interpréter ce D
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Taxonomie des outils de mesure}
