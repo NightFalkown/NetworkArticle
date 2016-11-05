@@ -1,5 +1,7 @@
 \documentclass[compress]{beamer}
 
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
 \usepackage{color}
 \usepackage[utf8]{inputenc}
 \usepackage{amssymb}
@@ -227,6 +229,26 @@ J. Gheysen}
 \item \textbf{Idée :}  Mesurer le {\color{red}RTT} (Round-Trip-Time) de la source jusque chaque saut.
 \item \textbf{Technique :} Envoyer des paquets tests avec des {\color{red}TTL} (Time-To-Live) calculés pour expirer à un saut particulier. 
 \end{itemize}
+
+%\vspace{1cm}
+%
+%\tikzset{node/.style={draw,ellipse,minimum width=5pt, minimum height=1.2cm, fill=black!25}}
+%\begin{tikzpicture}
+%	\node[node](S)at(0,0){Source};
+%	\node[node](Hf)at(3,0){Hop1};
+%	\node[node](Hs)at(6,0){Hop2};
+%	\node[node](D)at(9,0){Destination};
+%	
+%	\path[->, line width=1.2pt, blue] (S) edge[bend left=20] (Hf);
+%	\path[->, line width=1.2pt, blue] (Hf) edge[bend left=20] (Hs);
+%	\path[->, line width=1.2pt, blue] (Hs) edge[bend left=20] (D);
+%	
+%	\path[->, line width=1.2pt, red] (S) edge[bend left=40] (Hf);
+%	\path[->, line width=1.2pt, red] (Hf) edge[bend left=40] (Hs);
+%
+%	\path[->, line width=1.5pt, green] (S) edge[bend left=60] (Hf);
+%\end{tikzpicture}
+
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
