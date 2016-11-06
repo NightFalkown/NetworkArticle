@@ -372,6 +372,76 @@ Exemple :
 % %TODO Discuter des calculs pour D et interpréter ce D
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\begin{frame}{Self-Loading Periodic Streams (SLoPS)}{Principe 1/3}
+\begin{itemize}
+\item \textbf{But :}  Mesurer la {\color{red}bande passante disponible} sur l'entièreté d'un chemin.
+\item \textbf{Idée :}  Envoyer un certain nombre de paquets à un certain 
+taux. Jusqu'à ce qu'on aperçoive un délai dans la file du receveur.
+\item \textbf{Technique :} Pour approcher la valeur de la bande passante
+disponible, on utilise un algorithme itératif proche de la recherche binaire.
+\end{itemize}
+\end{frame}
+% Si R > A alors R_max = R
+% Sinon R_min = R
+% Le nouveau R = (R_max + R_min)/2
+\begin{frame}{Self-Loading Periodic Streams (SLoPS)}{Principe 2/3}
+
+SLoPS basé sur une technique très simple en quelque étapes :
+\begin{itemize}
+\item On envoie K paquets de taille fixe avec un taux R.
+\item Le receveur nous donne la valeur du One Way Delay (OWD)
+\item Si $\Delta_{OWD}$ augmente alors R > A sinon R < A
+\item On détermine la nouvelle valeur de R.
+\item On répète ces étapes jusqu'à ce que $R \approx 0.9 * A$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Self-Loading Periodic Streams (SLoPS)}{Principe 3/3}
+
+Le "One Way Delay" est provoqué par une surcharge de la file
+sur le lien.
+
+La nouvelle valeur de R est déterminé à l'aide d'un algorithme
+proche de la recherche binaire.
+
+\begin{figure}[hbtp]
+		\centering
+		\includegraphics[scale=0.4]{slopsOWD.png}
+		\caption{Évolution des OWD en fonction de R}
+\end{figure}
+
+\end{frame}
+\begin{frame}{Trains of Packet Pairs (TOPP)}{Principe}
+\begin{itemize}
+\item \textbf{But :}  Mesurer la {\color{red}bande passante disponible} sur l'entièreté d'un chemin.
+\item \textbf{Idée :}  Envoyer plusieurs pairs de paquets à un taux
+croissant.
+\item \textbf{Technique :} On fixe un taux à l'envoi et on calcul à
+nouveau le taux au niveau du receveur. Si le taux receveur < taux envoi alors on a dépassé la bande passante disponible.
+Sinon taux à l'entrée = taux à la sortie.
+\end{itemize}
+\end{frame}
+\begin{frame}{Trains of Packet Pairs (TOPP)}{Principe}
+
+TOPP et SLoPS partent de la même idée de base, ils se différencient
+essentiellement sur la technique statistique des mesures ainsi que sur
+l'algorithme utiliser pour trouver la nouvelle valeur du taux.
+TOPP augmente de manière itérative ce taux.
+
+TOPP a aussi l'avantage de pouvoir calculer la capacité du chemin.
+
+
+\end{frame}
+\begin{frame}{Trains of Packet Pairs (TOPP)}{Fomulation}
+Le taux initial vaux
+$R_0 = \frac{L}{\Delta_s}$ où L est la taille du paquet envoyé et $\Delta_s$ est la dispersion des paquets.
+\begin{figure}[hbtp]
+		\centering
+		\includegraphics[scale=0.4]{TOPP.png}
+		\caption{Approximation de A avec TOPP}
+	\end{figure}
+\end{frame}
+
 \section{Taxonomie des outils de mesure}
 \begin{frame}{Taxonomie des outils de mesure}
 
