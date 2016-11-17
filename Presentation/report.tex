@@ -53,10 +53,12 @@ J. Gheysen}
    			\includegraphics[scale=0.23]{capacity.jpg}
    			\caption{Capacité}
    		\end{minipage} \hfill
+   		\pause
    		\begin{minipage}[c]{.46\linewidth}
       		\includegraphics[scale=0.18]{bande_passante.jpg}
       		\caption{Bande Passante}
    		\end{minipage}
+   		\pause
    		\begin{minipage}[c]{.46\linewidth}
    			\includegraphics[scale=0.2]{tcp.png}
    			\caption{Bulk-Transfert-Capacity}
@@ -376,8 +378,9 @@ Exemple :
 \begin{frame}{Self-Loading Periodic Streams (SLoPS)}{Principe 1/3}
 \begin{itemize}
 \item \textbf{But :}  Mesurer la {\color{red}bande passante disponible} sur l'entièreté d'un chemin.
-\item \textbf{Idée :}  Envoyer un certain nombre de paquets à un certain 
-taux. Jusqu'à ce qu'on aperçoive un délai dans la file du receveur.
+\pause
+\item \textbf{Idée :}  Envoyer un certain nombre de paquets à un taux variable. Jusqu'à ce qu'on aperçoive un délai dans la file du lien tendu sur chemin.
+\pause
 \item \textbf{Technique :} Pour approcher la valeur de la bande passante
 disponible, on utilise un algorithme itératif proche de la recherche binaire.
 \end{itemize}
@@ -390,8 +393,10 @@ disponible, on utilise un algorithme itératif proche de la recherche binaire.
 SLoPS basé sur une technique très simple en quelque étapes :
 \begin{itemize}
 \item On envoie K paquets de taille fixe avec un taux R.
+\pause
 \item Le receveur nous donne la valeur du One Way Delay (OWD)
-\item Si $\Delta_{OWD}$ augmente alors R > A sinon R < A
+\item Si $\Delta_{OWD}$ augmente alors R $>$ A sinon R $<$ A
+\pause
 \item On détermine la nouvelle valeur de R.
 \item On répète ces étapes jusqu'à ce que $R \approx 0.9 * A$
 \end{itemize}
@@ -417,10 +422,12 @@ proche de la recherche binaire.
 \begin{frame}{Trains of Packet Pairs (TOPP)}{Principe}
 \begin{itemize}
 \item \textbf{But :}  Mesurer la {\color{red}bande passante disponible} sur l'entièreté d'un chemin.
+\pause
 \item \textbf{Idée :}  Envoyer plusieurs pairs de paquets à un taux
 croissant.
+\pause
 \item \textbf{Technique :} On fixe un taux à l'envoi et on calcul à
-nouveau le taux au niveau du receveur. Si le taux receveur < taux envoi alors on a dépassé la bande passante disponible.
+nouveau le taux au niveau du receveur. Si le taux receveur $<$ taux envoi alors on a dépassé la bande passante disponible.
 Sinon taux à l'entrée = taux à la sortie.
 \end{itemize}
 \end{frame}
@@ -433,11 +440,30 @@ TOPP augmente de manière itérative ce taux.
 
 TOPP a aussi l'avantage de pouvoir calculer la capacité du chemin.
 
-
 \end{frame}
-\begin{frame}{Trains of Packet Pairs (TOPP)}{Fomulation}
+\begin{frame}{Trains of Packet Pairs (TOPP)}{Fomulation 1/}
 Le taux initial vaux
 $R_0 = \frac{L}{\Delta_s}$ où L est la taille du paquet envoyé et $\Delta_s$ est la dispersion des paquets.
+
+Soit un chemin de capacité C avec un bande passante disponible A et
+un taux de "Cross traffic" moyen $R_c$.
+
+Si $R_0$ est plus grand que A alors on obtient les equations suivantes:
+\begin{align}
+R_m = \frac{R_0}{R_0 + R_c}C \\
+\frac{R_0}{R_m} = \frac{R_0 + R_c}{C}
+\label{capa}
+\end{align}
+\end{frame}
+%Pour rappel R_0/R_m est la bande passante trouvée donc "fixe" ensuite on
+%continue d'augmenter R_0 pour comparé la différence entre l'estimation
+% de A et R_0 et ainsi determiner la valeur de la pente
+\begin{frame}{Trains of Packet Pairs (TOPP)}{Fomulation 2/}
+TOPP estime la bande passante disponible au ratio maximum tel que 
+$R_0 \approx R_m$.
+
+On utilise l'équation \eqref{capa} pour déterminer la capacité C à partir 
+de la pente de $\frac{R_0}{R_m}$ par rapport a $R_0$.
 \begin{figure}[hbtp]
 		\centering
 		\includegraphics[scale=0.4]{TOPP.png}
