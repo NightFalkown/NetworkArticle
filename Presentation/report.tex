@@ -390,7 +390,7 @@ disponible, on utilise un algorithme itératif proche de la recherche binaire.
 % Le nouveau R = (R_max + R_min)/2
 \begin{frame}{Self-Loading Periodic Streams (SLoPS)}{Principe 2/3}
 
-SLoPS basé sur une technique très simple en quelque étapes :
+SLoPS basé sur une technique très simple en quelques étapes :
 \begin{itemize}
 \item On envoie K paquets de taille fixe avec un taux R.
 \pause
@@ -407,7 +407,7 @@ SLoPS basé sur une technique très simple en quelque étapes :
 Le "One Way Delay" est provoqué par une surcharge de la file
 sur le lien.
 
-La nouvelle valeur de R est déterminé à l'aide d'un algorithme
+La nouvelle valeur de R est déterminée à l'aide d'un algorithme
 proche de la recherche binaire.
 
 \begin{figure}[hbtp]
@@ -423,10 +423,10 @@ proche de la recherche binaire.
 \begin{itemize}
 \item \textbf{But :}  Mesurer la {\color{red}bande passante disponible} sur l'entièreté d'un chemin.
 \pause
-\item \textbf{Idée :}  Envoyer plusieurs pairs de paquets à un taux
+\item \textbf{Idée :}  Envoyer plusieurs paires de paquets à un taux
 croissant.
 \pause
-\item \textbf{Technique :} On fixe un taux à l'envoi et on calcul à
+\item \textbf{Technique :} On fixe un taux à l'envoi et on calcule à
 nouveau le taux au niveau du receveur. Si le taux receveur $<$ taux envoi alors on a dépassé la bande passante disponible.
 Sinon taux à l'entrée = taux à la sortie.
 \end{itemize}
@@ -435,20 +435,20 @@ Sinon taux à l'entrée = taux à la sortie.
 
 TOPP et SLoPS partent de la même idée de base, ils se différencient
 essentiellement sur la technique statistique des mesures ainsi que sur
-l'algorithme utiliser pour trouver la nouvelle valeur du taux.
+l'algorithme utilisé pour trouver la nouvelle valeur du taux.
 TOPP augmente de manière itérative ce taux.
 
 TOPP a aussi l'avantage de pouvoir calculer la capacité du chemin.
 
 \end{frame}
 \begin{frame}{Trains of Packet Pairs (TOPP)}{Fomulation 1/}
-Le taux initial vaux
+Le taux initial vaut
 $R_0 = \frac{L}{\Delta_s}$ où L est la taille du paquet envoyé et $\Delta_s$ est la dispersion des paquets.
 
 Soit un chemin de capacité C avec un bande passante disponible A et
 un taux de "Cross traffic" moyen $R_c$.
 
-Si $R_0$ est plus grand que A alors on obtient les equations suivantes:
+Si $R_0$ est plus grand que A alors on obtient les équations suivantes:
 \begin{align}
 R_m = \frac{R_0}{R_0 + R_c}C \\
 \frac{R_0}{R_m} = \frac{R_0 + R_c}{C}
@@ -463,7 +463,7 @@ TOPP estime la bande passante disponible au ratio maximum tel que
 $R_0 \approx R_m$.
 
 On utilise l'équation \eqref{capa} pour déterminer la capacité C à partir 
-de la pente de $\frac{R_0}{R_m}$ par rapport a $R_0$.
+de la pente de $\frac{R_0}{R_m}$ par rapport à $R_0$.
 \begin{figure}[hbtp]
 		\centering
 		\includegraphics[scale=0.4]{TOPP.png}
