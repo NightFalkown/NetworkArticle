@@ -1,0 +1,56 @@
+[file]
+report.pdf
+[notes]
+### 1
+11### 11
+Suppositions :
+ - Charge du trafic stationnaire
+ - Routes ne changent pas pendant les tests### 12
+Comment calculer le RTT ? 
+ - Alpha (contient constantes) :
+	* Délai de propagation message
+	* Délai sérialisation réponse ICMP
+	* Délai de propagation réponse ICMP
+ - Beta : 
+	* Sommes des inverses de la capacité à interpréter comme la pente du minimum RTT (Martin some explanations please ?)
+
+ATTENTION :
+	* Ne tient pas compte du queuing (au - 1 aura de la chance).
+	* Layer 2 store-forward switches peuvent ralentir => Toujours sujet de recherche. ### 13
+Mesure RTT premier hop en fonction de la taille du paquet test. 
+
+	* RTT
+	* Minimum RTT
+	* Régression linéaire des minimums RTT### 14
+Dispersion après un saut = max(avant, après).
+
+Sur un chemin = max des dispersions.
+
+On déduit de la dernière formule que C = L / DeltaR.### 15
+RAPPEL : C = L / DeltaR
+
+Sous-estimation capacité : Des paquets s'intercalent et augmentent la dispersion 
+	* Augmente DeltaR et diminue donc C
+
+Sur-estimation capacité : 1er paquet plus retardé que le 2ème
+	*Diminue DeltaE et augmente donc C 
+
+Mais du coup C augmente si L augmente ? Oo (MTU bloque çà ?)
+
+Utiliser Moyenne et valeur dominante non adapté. 
+
+Pistes : 
+	* Utiliser les variations de délais au lieu de la dispersion.
+	* PBM (Packet Bunch Method) : Analyse l'intensité des noeuds locaux.
+	* Utiliser l'estimation de l'intensité du noyau au lieu de l'histogramme. ### 16
+Delta R (N) = dispersion le long du chemin
+
+D = C si pas de cross trafic
+
+D se calcule en fonction du nombre de liens et de la dispersion le long du chemin
+
+E[D] = estimation du taux de dispersion avec un cross trafic Xc. 
+	Proportionnel aux capacité C1 et C0 
+	Inversément proportionnel au cross trafic Rc
+
+Deltat 2 = ((N-1)L + Xc) / C1

@@ -227,8 +227,11 @@ J. Gheysen}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Variable Packet Size (VPS) probing}{Principe}
 \begin{itemize}
+\pause 
 \item \textbf{But :}  Mesurer la {\color{red}capacité} de chaque saut le long d'un chemin.
+\pause
 \item \textbf{Idée :}  Mesurer le {\color{red}RTT} (Round-Trip-Time) de la source jusque chaque saut.
+\pause
 \item \textbf{Technique :} Envoyer des paquets tests avec des {\color{red}TTL} (Time-To-Live) calculés pour expirer à un saut particulier. 
 \end{itemize}
 
@@ -255,9 +258,8 @@ J. Gheysen}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Envoi de paquets avec TTL calculés pour arriver à un saut particulier.
-%TODO comment ? 
+%Comment ? TTL s'exprime en hops donc ok !
 %Réponse du hop avec message ICMP, de là on peut calculer le RTT.
-%TODO Faire schéma 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}{Variable Packet Size (VPS) probing}{Formalisation}
@@ -266,9 +268,9 @@ J. Gheysen}
 	\end{block}
 \begin{itemize}
 	\item $\alpha$ : Délai de propagation jusqu'au saut i + délai de 	sérialisation et délai de propagation de la réponse ICMP.
-	\item $\beta_i$ : Pente du RTT minimum jusqu'au hop i. %TODO Meilleure explication souhaitée. 
+	\item $\beta_i$ : Pente du RTT minimum jusqu'au hop i.
 \end{itemize}
-
+\pause
 \begin{block}{Capacité d'un saut i : $C_i$}
 	$$ C_i = \frac{1}{\beta_i - \beta_{i-1}} $$
 \end{block}
@@ -283,27 +285,27 @@ J. Gheysen}
 %Dans les calculs on envoie pas mal de paquets espérant qu'un ne 
 %rencontrera pas de queuing delay. 
 %/!\ Erreurs importantes possibles s'il y a des store-forward 
-%layer 2 switches " %TODO voir plus en profondeur" introduisant
-%des délais de sérialisation. 
+%layer 2 switches
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}{Variable Packet Size (VPS) probing}{Résultats}
 	\begin{figure}[hbtp]
 		\centering
 		\includegraphics[scale=0.7]{schema4.png}
-		\caption{Mesures de RTT le long d'un chemin}
+		\caption{Mesures de RTT pour le premier hop d'un chemin}
 	\end{figure}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %On peut voir sur ce schéma la mesure des RTT, minimum RTT et la 
-%droite %TODO "fittant le mieux l'évolution linéaire".
+%droite "fittant les minimums  RTT".
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Packet Pair/Train Dispersion (PPTD) probing}
 \begin{frame}{Packet Pair/Train Dispersion (PPTD) probing}{Principe 1/3}
 \begin{itemize}
 	\item \textbf{But :} Mesurer la {\color{red}capacité} sur l'entièreté d'un chemin. 
+	\pause
 	\item \textbf{Idée :} Envoyer des {\color{red}paires de paquets} et calculer la distance en temps (dispersion) entre le dernier bit de ces derniers. 
 	\begin{figure}[hbtp]
 		\centering
@@ -325,6 +327,7 @@ J. Gheysen}
 \begin{frame}{Packet Pair/Train Dispersion (PPTD) probing}{Principe 2/3}
 \begin{itemize}
 	\item \textbf{Problème :} Il faut en réalité tenir compte du {\color{red}trafic} pouvant {\color{red}perturber} les mesures.
+	\pause
 	\item \textbf{Solution 1:} Envoyer un {\color{red}grand nombre} de paquet et établir des statistiques.
 	\item \textbf{Résultat :} Interprétations statistiques classiques offrent des résultats peu fiables. 
 	\begin{figure}[hbtp]
@@ -356,13 +359,12 @@ Exemple :
 \item {\color{red}Trafic extérieur} de taux $R_C < C_1 < C_0$ sur 2\textsuperscript{ème} lien
 \end{itemize} 
 \vspace{10pt}
-		$$ E[D] = \frac{(N-1)L}{\Delta_2} =  \frac{C_1}{1+\frac{R_0}{C_0}} < C_1$$
+		$$ E[D] = \frac{(N-1)L}{\Delta_2} =  \frac{C_1}{1+\frac{R_C}{C_0}} < C_1$$
 
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Pourquoi (N-1) pour N paquets ? On ne prend pas en compte le 1er paquet,
-%juste son dernier bit (ex avec deux paquets on ne prend que 1*L).
+%Pourquoi (N-1) pour N paquets ? Car N paquets => n-1 chemins.
 %\DeltaR est la dispersion end-to-end du chemin.
 %Pour un chemin sans trafic : taux de dispersion = capacité.
 %Le cross traffic peut rendre D bcp plus << que C. 
