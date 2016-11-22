@@ -4,7 +4,36 @@ report.pdf
 12387
 [notes]
 ### 1
-11### 11
+11### 3
+Le terme bande passante à un premier abord peut-être défini comme la quantité de données qu'un réseau peut transporter par unité de temps. 
+
+Cependant les outils de mesure de bande passante font référence à des notions plus précises que la définition proposée ci-dessus. 
+
+Cet article va porter sur des techniques d'estimation pouvant être effectuée par n'importe quel hôte ne disposant pas spécialement des droits administrateurs réseau. 
+
+(Note que même les admins ne savent pas tout regarder exactement : ex sous-réseau pas à eux).### 4
+CAPACITE : Débit maximum atteignable dans un lien/chemin
+
+BANDE PASSANTE : Bande passante dispo = Capacité restante maximum non-utilisée du lien/chemin.
+
+BTC : Débit maximum atteignable par une unique connection TCP### 5
+Attention Segment = Frame d'un point de vue data link layer !### 6
+Regardons la capacité pour un SAUT. 
+
+Temps transimission : 
+	* proportionnel à longueur L3 et overhead L2
+	* inversément proportionnel capacité L2
+
+Capacite COUCHE IP : 
+	* Proportionnel capacité L2 
+	* Inv-propo rapport Overhead L2 sur longueur L3
+	
+	Que définit ce rapport ? ### 7
+Le MTU : maximum transmission unit
+
+Plus on remplit le datagramme plus c'est "rentable" au niveau du transfert ! 
+
+Schéma entre les rapports CL2 etCL3, plus paquet est grand, moins le rapport est signifiant. ### 11
 Suppositions :
  - Charge du trafic stationnaire
  - Routes ne changent pas pendant les tests### 12
@@ -45,15 +74,12 @@ Pistes :
 	* Utiliser les variations de délais au lieu de la dispersion.
 	* PBM (Packet Bunch Method) : Analyse l'intensité des noeuds locaux.
 	* Utiliser l'estimation de l'intensité du noyau au lieu de l'histogramme. ### 16
-Delta R (N) = dispersion le long du chemin
-
-D = C si pas de cross trafic
-
 D se calcule en fonction du nombre de liens et de la dispersion le long du chemin
 
-E[D] 
-	* Proportionnel à la capacité C0 et C1
-	* Inversément proportionnel au taux de trafic extérieur. 
+Taux de dispersion D = capacité si le trafic est nul
 
-Pour info : 
-	Delta 2 = ((N-1)L+Xc)/C1 
+Estimation du taux de D : 
+	* Augmente si C1 ou C0 augmente
+	* Diminue si RC diminue
+
+Pour rappel : delta2 = N-1*L + Xc sur C1

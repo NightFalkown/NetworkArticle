@@ -36,7 +36,13 @@ J. Gheysen}
 
 \section{Introduction}
 \begin{frame}{Introduction}
-
+	\begin{alertblock}{Bande passante : définition globale}
+		Quantité de données qu'un réseau peut transporter par unité de temps
+	\end{alertblock}
+	
+	\begin{alertblock}{Remarque}
+		Le but de cet article est de donner des techniques \textbf{d'estimation}.
+	\end{alertblock}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -49,6 +55,7 @@ J. Gheysen}
 
 \begin{frame}{Introduction}{Vocabulaire 1/2}
 	\begin{figure}
+		\pause
    		\begin{minipage}[c]{.46\linewidth}
    			\includegraphics[scale=0.23]{capacity.jpg}
    			\caption{Capacité}
@@ -71,10 +78,10 @@ J. Gheysen}
 	\item Différenciation entre liens de la couche données (1) et couche IP(2).
 	\begin{enumerate}
 		\item \textbf{Segment} : Lien physique point à point. %Etendre aux autres points dans l'article ?
-		\item \textbf{Hop} (saut) : Consiste en un ensemble de segments. %Connectés à travers switchs/bridges...
+		\item \textbf{Hop (saut)} : Consiste en un ensemble de segments. %Connectés à travers switchs/bridges...
 	\end{enumerate}
 	\vspace{10pt}
-	\item \textbf{Chemin end-to-end} : Lie un hôte à une source via une suite de hops.
+	\item \textbf{Chemin end-to-end} : Lie un hôte à une source via une suite de sauts.
 	\vspace{10pt}
 	\item Que mesurer ? Dans quelle situation ? 
 	\begin{itemize}
