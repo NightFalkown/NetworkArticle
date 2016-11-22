@@ -51,4 +51,9 @@ D = C si pas de cross trafic
 
 D se calcule en fonction du nombre de liens et de la dispersion le long du chemin
 
-E
+E[D] 
+	* Proportionnel à la capacité C0 et C1
+	* Inversément proportionnel au taux de trafic extérieur. 
+
+Pour info : 
+	Delta 2 = ((N-1)L+Xc)/C1 
