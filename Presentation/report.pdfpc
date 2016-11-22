@@ -1,5 +1,7 @@
 [file]
 report.pdf
+[font_size]
+12387
 [notes]
 ### 1
 11### 11
@@ -49,8 +51,4 @@ D = C si pas de cross trafic
 
 D se calcule en fonction du nombre de liens et de la dispersion le long du chemin
 
-E[D] = estimation du taux de dispersion avec un cross trafic Xc. 
-	Proportionnel aux capacité C1 et C0 
-	Inversément proportionnel au cross trafic Rc
-
-Deltat 2 = ((N-1)L + Xc) / C1
+E
