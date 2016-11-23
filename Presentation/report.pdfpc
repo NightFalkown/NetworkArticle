@@ -1,0 +1,85 @@
+[file]
+report.pdf
+[font_size]
+12387
+[notes]
+### 1
+11### 3
+Le terme bande passante à un premier abord peut-être défini comme la quantité de données qu'un réseau peut transporter par unité de temps. 
+
+Cependant les outils de mesure de bande passante font référence à des notions plus précises que la définition proposée ci-dessus. 
+
+Cet article va porter sur des techniques d'estimation pouvant être effectuée par n'importe quel hôte ne disposant pas spécialement des droits administrateurs réseau. 
+
+(Note que même les admins ne savent pas tout regarder exactement : ex sous-réseau pas à eux).### 4
+CAPACITE : Débit maximum atteignable dans un lien/chemin
+
+BANDE PASSANTE : Bande passante dispo = Capacité restante maximum non-utilisée du lien/chemin.
+
+BTC : Débit maximum atteignable par une unique connection TCP### 5
+Attention Segment = Frame d'un point de vue data link layer !### 6
+Regardons la capacité pour un SAUT. 
+
+Temps transimission : 
+	* proportionnel à longueur L3 et overhead L2
+	* inversément proportionnel capacité L2
+
+Capacite COUCHE IP : 
+	* Proportionnel capacité L2 
+	* Inv-propo rapport Overhead L2 sur longueur L3
+	
+	Que définit ce rapport ? ### 7
+Le MTU : maximum transmission unit
+
+Plus on remplit le datagramme plus c'est "rentable" au niveau du transfert ! 
+
+Schéma entre les rapports CL2 etCL3, plus paquet est grand, moins le rapport est signifiant. ### 11
+Suppositions :
+ - Charge du trafic stationnaire
+ - Routes ne changent pas pendant les tests### 12
+Comment calculer le RTT ? 
+ - Alpha (contient constantes) :
+	* Délai de propagation message
+	* Délai sérialisation réponse ICMP
+	* Délai de propagation réponse ICMP
+ - Beta : 
+	* Sommes des inverses de la capacité à interpréter comme la pente du minimum RTT (Martin some explanations please ?)
+
+ATTENTION :
+	* Ne tient pas compte du queuing (au - 1 aura de la chance).
+	* Layer 2 store-forward switches peuvent ralentir => Toujours sujet de recherche. ### 13
+Mesure RTT premier hop en fonction de la taille du paquet test. 
+
+	* RTT
+	* Minimum RTT
+	* Régression linéaire des minimums RTT### 14
+Dispersion après un saut = max(avant, après).
+
+Sur un chemin = max des dispersions.
+
+On déduit de la dernière formule que C = L / DeltaR.### 15
+RAPPEL : C = L / DeltaR
+
+Sous-estimation capacité : Des paquets s'intercalent et augmentent la dispersion 
+	* Augmente DeltaR et diminue donc C
+
+Sur-estimation capacité : 1er paquet plus retardé que le 2ème
+	*Diminue DeltaE et augmente donc C 
+
+Mais du coup C augmente si L augmente ? Oo (MTU bloque çà ?)
+
+Utiliser Moyenne et valeur dominante non adapté. 
+
+Pistes : 
+	* Utiliser les variations de délais au lieu de la dispersion.
+	* PBM (Packet Bunch Method) : Analyse l'intensité des noeuds locaux.
+	* Utiliser l'estimation de l'intensité du noyau au lieu de l'histogramme. ### 16
+D se calcule en fonction du nombre de liens et de la dispersion le long du chemin
+
+Taux de dispersion D = capacité si le trafic est nul
+
+Estimation du taux de D : 
+	* Augmente si C1 ou C0 augmente
+	* Diminue si RC diminue
+
+Pour rappel : delta2 = N-1*L + Xc sur C1

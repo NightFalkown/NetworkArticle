@@ -36,7 +36,13 @@ J. Gheysen}
 
 \section{Introduction}
 \begin{frame}{Introduction}
-
+	\begin{alertblock}{Bande passante : définition globale}
+		Quantité de données qu'un réseau peut transporter par unité de temps
+	\end{alertblock}
+	
+	\begin{alertblock}{Remarque}
+		Le but de cet article est de donner des techniques \textbf{d'estimation}.
+	\end{alertblock}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -49,6 +55,7 @@ J. Gheysen}
 
 \begin{frame}{Introduction}{Vocabulaire 1/2}
 	\begin{figure}
+		\pause
    		\begin{minipage}[c]{.46\linewidth}
    			\includegraphics[scale=0.23]{capacity.jpg}
    			\caption{Capacité}
@@ -71,10 +78,10 @@ J. Gheysen}
 	\item Différenciation entre liens de la couche données (1) et couche IP(2).
 	\begin{enumerate}
 		\item \textbf{Segment} : Lien physique point à point. %Etendre aux autres points dans l'article ?
-		\item \textbf{Hop} (saut) : Consiste en un ensemble de segments. %Connectés à travers switchs/bridges...
+		\item \textbf{Hop (saut)} : Consiste en un ensemble de segments. %Connectés à travers switchs/bridges...
 	\end{enumerate}
 	\vspace{10pt}
-	\item \textbf{Chemin end-to-end} : Lie un hôte à une source via une suite de hops.
+	\item \textbf{Chemin end-to-end} : Lie un hôte à une source via une suite de sauts.
 	\vspace{10pt}
 	\item Que mesurer ? Dans quelle situation ? 
 	\begin{itemize}
@@ -227,8 +234,11 @@ J. Gheysen}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Variable Packet Size (VPS) probing}{Principe}
 \begin{itemize}
+\pause 
 \item \textbf{But :}  Mesurer la {\color{red}capacité} de chaque saut le long d'un chemin.
+\pause
 \item \textbf{Idée :}  Mesurer le {\color{red}RTT} (Round-Trip-Time) de la source jusque chaque saut.
+\pause
 \item \textbf{Technique :} Envoyer des paquets tests avec des {\color{red}TTL} (Time-To-Live) calculés pour expirer à un saut particulier. 
 \end{itemize}
 
@@ -255,9 +265,8 @@ J. Gheysen}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Envoi de paquets avec TTL calculés pour arriver à un saut particulier.
-%TODO comment ? 
+%Comment ? TTL s'exprime en hops donc ok !
 %Réponse du hop avec message ICMP, de là on peut calculer le RTT.
-%TODO Faire schéma 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}{Variable Packet Size (VPS) probing}{Formalisation}
@@ -266,9 +275,9 @@ J. Gheysen}
 	\end{block}
 \begin{itemize}
 	\item $\alpha$ : Délai de propagation jusqu'au saut i + délai de 	sérialisation et délai de propagation de la réponse ICMP.
-	\item $\beta_i$ : Pente du RTT minimum jusqu'au hop i. %TODO Meilleure explication souhaitée. 
+	\item $\beta_i$ : Pente du RTT minimum jusqu'au hop i.
 \end{itemize}
-
+\pause
 \begin{block}{Capacité d'un saut i : $C_i$}
 	$$ C_i = \frac{1}{\beta_i - \beta_{i-1}} $$
 \end{block}
@@ -283,27 +292,27 @@ J. Gheysen}
 %Dans les calculs on envoie pas mal de paquets espérant qu'un ne 
 %rencontrera pas de queuing delay. 
 %/!\ Erreurs importantes possibles s'il y a des store-forward 
-%layer 2 switches " %TODO voir plus en profondeur" introduisant
-%des délais de sérialisation. 
+%layer 2 switches
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}{Variable Packet Size (VPS) probing}{Résultats}
 	\begin{figure}[hbtp]
 		\centering
 		\includegraphics[scale=0.7]{schema4.png}
-		\caption{Mesures de RTT le long d'un chemin}
+		\caption{Mesures de RTT pour le premier hop d'un chemin}
 	\end{figure}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %On peut voir sur ce schéma la mesure des RTT, minimum RTT et la 
-%droite %TODO "fittant le mieux l'évolution linéaire".
+%droite "fittant les minimums  RTT".
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Packet Pair/Train Dispersion (PPTD) probing}
 \begin{frame}{Packet Pair/Train Dispersion (PPTD) probing}{Principe 1/3}
 \begin{itemize}
 	\item \textbf{But :} Mesurer la {\color{red}capacité} sur l'entièreté d'un chemin. 
+	\pause
 	\item \textbf{Idée :} Envoyer des {\color{red}paires de paquets} et calculer la distance en temps (dispersion) entre le dernier bit de ces derniers. 
 	\begin{figure}[hbtp]
 		\centering
@@ -325,6 +334,7 @@ J. Gheysen}
 \begin{frame}{Packet Pair/Train Dispersion (PPTD) probing}{Principe 2/3}
 \begin{itemize}
 	\item \textbf{Problème :} Il faut en réalité tenir compte du {\color{red}trafic} pouvant {\color{red}perturber} les mesures.
+	\pause
 	\item \textbf{Solution 1:} Envoyer un {\color{red}grand nombre} de paquet et établir des statistiques.
 	\item \textbf{Résultat :} Interprétations statistiques classiques offrent des résultats peu fiables. 
 	\begin{figure}[hbtp]
@@ -356,13 +366,12 @@ Exemple :
 \item {\color{red}Trafic extérieur} de taux $R_C < C_1 < C_0$ sur 2\textsuperscript{ème} lien
 \end{itemize} 
 \vspace{10pt}
-		$$ E[D] = \frac{(N-1)L}{\Delta_2} =  \frac{C_1}{1+\frac{R_0}{C_0}} < C_1$$
+		$$ E[D] = \frac{(N-1)L}{\Delta_2} =  \frac{C_1}{1+\frac{R_C}{C_0}} < C_1$$
 
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Pourquoi (N-1) pour N paquets ? On ne prend pas en compte le 1er paquet,
-%juste son dernier bit (ex avec deux paquets on ne prend que 1*L).
+%Pourquoi (N-1) pour N paquets ? Car N paquets => n-1 chemins.
 %\DeltaR est la dispersion end-to-end du chemin.
 %Pour un chemin sans trafic : taux de dispersion = capacité.
 %Le cross traffic peut rendre D bcp plus << que C. 
@@ -390,7 +399,7 @@ disponible, on utilise un algorithme itératif proche de la recherche binaire.
 % Le nouveau R = (R_max + R_min)/2
 \begin{frame}{Self-Loading Periodic Streams (SLoPS)}{Principe 2/3}
 
-SLoPS basé sur une technique très simple en quelque étapes :
+SLoPS basé sur une technique très simple en quelques étapes :
 \begin{itemize}
 \item On envoie K paquets de taille fixe avec un taux R.
 \pause
@@ -407,7 +416,7 @@ SLoPS basé sur une technique très simple en quelque étapes :
 Le "One Way Delay" est provoqué par une surcharge de la file
 sur le lien.
 
-La nouvelle valeur de R est déterminé à l'aide d'un algorithme
+La nouvelle valeur de R est déterminée à l'aide d'un algorithme
 proche de la recherche binaire.
 
 \begin{figure}[hbtp]
@@ -423,10 +432,10 @@ proche de la recherche binaire.
 \begin{itemize}
 \item \textbf{But :}  Mesurer la {\color{red}bande passante disponible} sur l'entièreté d'un chemin.
 \pause
-\item \textbf{Idée :}  Envoyer plusieurs pairs de paquets à un taux
+\item \textbf{Idée :}  Envoyer plusieurs paires de paquets à un taux
 croissant.
 \pause
-\item \textbf{Technique :} On fixe un taux à l'envoi et on calcul à
+\item \textbf{Technique :} On fixe un taux à l'envoi et on calcule à
 nouveau le taux au niveau du receveur. Si le taux receveur $<$ taux envoi alors on a dépassé la bande passante disponible.
 Sinon taux à l'entrée = taux à la sortie.
 \end{itemize}
@@ -435,20 +444,20 @@ Sinon taux à l'entrée = taux à la sortie.
 
 TOPP et SLoPS partent de la même idée de base, ils se différencient
 essentiellement sur la technique statistique des mesures ainsi que sur
-l'algorithme utiliser pour trouver la nouvelle valeur du taux.
+l'algorithme utilisé pour trouver la nouvelle valeur du taux.
 TOPP augmente de manière itérative ce taux.
 
 TOPP a aussi l'avantage de pouvoir calculer la capacité du chemin.
 
 \end{frame}
 \begin{frame}{Trains of Packet Pairs (TOPP)}{Fomulation 1/}
-Le taux initial vaux
+Le taux initial vaut
 $R_0 = \frac{L}{\Delta_s}$ où L est la taille du paquet envoyé et $\Delta_s$ est la dispersion des paquets.
 
 Soit un chemin de capacité C avec un bande passante disponible A et
 un taux de "Cross traffic" moyen $R_c$.
 
-Si $R_0$ est plus grand que A alors on obtient les equations suivantes:
+Si $R_0$ est plus grand que A alors on obtient les équations suivantes:
 \begin{align}
 R_m = \frac{R_0}{R_0 + R_c}C \\
 \frac{R_0}{R_m} = \frac{R_0 + R_c}{C}
@@ -463,7 +472,7 @@ TOPP estime la bande passante disponible au ratio maximum tel que
 $R_0 \approx R_m$.
 
 On utilise l'équation \eqref{capa} pour déterminer la capacité C à partir 
-de la pente de $\frac{R_0}{R_m}$ par rapport a $R_0$.
+de la pente de $\frac{R_0}{R_m}$ par rapport à $R_0$.
 \begin{figure}[hbtp]
 		\centering
 		\includegraphics[scale=0.4]{TOPP.png}
@@ -471,19 +480,22 @@ de la pente de $\frac{R_0}{R_m}$ par rapport a $R_0$.
 	\end{figure}
 \end{frame}
 
-\section{Taxonomie des outils de mesure}
-\begin{frame}{Taxonomie des outils de mesure}
-Voici une liste des outils présenté dans l'article :
-
-
-\begin{figure}[hbtp]
-		\centering
-		\includegraphics[scale=0.4]{tools.png}
-	\end{figure}
-%Nous n'en présenterons pas
+\section{Conclusion}
+\begin{frame}{Conclusion}
+R. S. Prasad, M. Murray, C. Dovrolis, K. Claffy. Bandwidth estimation: metrics, measurement techniques, and tools. In IEEE Network, Volume 17, Issue 6, pages 27-35, 24 November 2003. 
 \end{frame}
-\begin{frame}{Remarques}
-
+\section{Références}
+\begin{frame}{Références}
+Article :
+\begin{itemize}
+	\item R. S. Prasad, M. Murray, C. Dovrolis, K. Claffy. Bandwidth estimation: metrics, measurement techniques, and tools. In IEEE Network, Volume 17, Issue 6, pages 27-35, 24 November 2003. 
+\end{itemize}
+Images : 
+\begin{itemize}
+	\item \url{http://www.forfait-internet.com/guides/fibre-optique/}, consulté le 22/11/2016.
+	\item \url{http://www.jechange.fr/telecom/internet/guides/test-debit-3642}, consulté le 22/11/2016.
+	\item \url{http://www.fixedbyvonnie.com/2015/05/networking-400-secret-tcp-three-way-handshakes/\#.WBSdqPmLTcs}, consulté le 22/11/2016.
+\end{itemize}
 \end{frame}
 
 \end{document}
