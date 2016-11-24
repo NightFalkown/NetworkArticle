@@ -1,20 +1,22 @@
 [file]
 report.pdf
+[skip]
+5,6,7,15,16,17,19,22,24,27,28,30,31,34,35,
 [font_size]
 12387
 [notes]
 ### 1
-11### 3
+### 3
 Le terme bande passante à un premier abord peut-être défini comme la quantité de données qu'un réseau peut transporter par unité de temps. 
 
-Cependant les outils de mesure de bande passante font référence à des notions plus précises que la définition proposée ci-dessus. 
+Outils de mesure de bande passante : référence à des notions plus précises.
 
 Cet article va porter sur des techniques d'estimation pouvant être effectuée par n'importe quel hôte ne disposant pas spécialement des droits administrateurs réseau. 
 
 (Note que même les admins ne savent pas tout regarder exactement : ex sous-réseau pas à eux).### 4
 CAPACITE : Débit maximum atteignable dans un lien/chemin
 
-BANDE PASSANTE : Bande passante dispo = Capacité restante maximum non-utilisée du lien/chemin.
+BANDE PASSANTE : Bande passante dispo = Débit restant maximum non-utilisée du lien/chemin.
 
 BTC : Débit maximum atteignable par une unique connection TCP### 5
 Attention Segment = Frame d'un point de vue data link layer !### 6
@@ -33,7 +35,31 @@ Le MTU : maximum transmission unit
 
 Plus on remplit le datagramme plus c'est "rentable" au niveau du transfert ! 
 
-Schéma entre les rapports CL2 etCL3, plus paquet est grand, moins le rapport est signifiant. ### 11
+Schéma entre les rapports CL2 etCL3, plus paquet est grand, moins le rapport est signifiant. ### 8
+La bande passante disponible va se concentrer sur les "espaces inutilisés" du lien. Contrairement a la capacité la bande passante est une mesure variable avec le temps car elle dépend du la charge de traffic du lien à un moment t.
+
+Un lien a un moment t est soit utilisé (1) ou inutilisé(0).
+
+Pour calculer la bande passante disponible d'un lien on va calculer
+ce qu'on appelle l'utilisation moyenne du lien.
+
+On la calcule en sommant l'utilisation sur un interval de temps et en divisant par la taille de cet interval.
+
+On obtient l'equation suivante.### 9
+La bande passante d'un chemin est la bande passante minimum sur tout les liens du chemin. On appelle le lien avec la bande passante minium le lien tendu.
+
+Capacité minimum et Bande passante minimum ne se trouve pas toujours se le meme lien.
+
+Provient du fait que C3 peut faire passer du traffic provenant d'un autre lien que C2### 10
+TCP est le protocol majeur dans l'internet, il supporte 90% du traffic.
+Il est donc logique que l'on s'interresse a débit que peux atteindre une connexion TCP.
+
+Infulencé par le nombre de connections TCP en concurrence.
+
+Les variation dans l'implementation de TCP.
+
+La bande passante disponnible et BTC ne sont pas identique
+vu que BTC et vraiment propre a TCP. Par exemple si un lien est occupé la bande passante disponnible et de 0 a ce moment là alors que pour le calcule du BTC cela dépend de comment une connexion BTC partage le lien avec une autre connexion TCP### 11
 Suppositions :
  - Charge du trafic stationnaire
  - Routes ne changent pas pendant les tests### 12
@@ -59,17 +85,10 @@ Sur un chemin = max des dispersions.
 
 On déduit de la dernière formule que C = L / DeltaR.### 15
 RAPPEL : C = L / DeltaR
-
 Sous-estimation capacité : Des paquets s'intercalent et augmentent la dispersion 
 	* Augmente DeltaR et diminue donc C
-
 Sur-estimation capacité : 1er paquet plus retardé que le 2ème
-	*Diminue DeltaE et augmente donc C 
-
-Mais du coup C augmente si L augmente ? Oo (MTU bloque çà ?)
-
-Utiliser Moyenne et valeur dominante non adapté. 
-
+	* Diminue DeltaE et augmente donc C 
 Pistes : 
 	* Utiliser les variations de délais au lieu de la dispersion.
 	* PBM (Packet Bunch Method) : Analyse l'intensité des noeuds locaux.
@@ -82,4 +101,25 @@ Estimation du taux de D :
 	* Augmente si C1 ou C0 augmente
 	* Diminue si RC diminue
 
-Pour rappel : delta2 = N-1*L + Xc sur C1
+Pour rappel : delta2 = N-1*L + Xc sur C1### 17
+Première technique de l'article pour calculer la bande passante disponnible d'un lien.
+
+On va envoyer des paquet a un certain taux jusqu'a appercevoir des délais.
+
+On va affiner la valeur du taux avec un algo itératif### 18
+### 19
+On envoie k paquet on regarde l'evolution du OWD
+si R > A Rmax = R sinon Rmin = A le nouveau R = Rmax+Rmin/2
+
+L'envoyeur doit veiller a ce que il existe un silence entre deux envoie successif pour s'assurer le recepteur ne s'occupe
+que d'un stream a la fois.
+
+Si les OWD n'augmente pas soudainement et que il n'est pas
+stable pour autant on arrive a une estimation correct de A### 20
+Une autre technique pour la bande passante qui parait semblable a
+la première### 21
+Sous l'hypothèse que le narrow link et tight link sont les meme
+sinon la capacité calculée pourra être supérieur a la capacité réelle.### 22
+Rm ici et le taux mesuré au niveau du recepteur.
+
+Rc vaut ici C - A donc la valeur du traffic croisé

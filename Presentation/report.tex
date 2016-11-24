@@ -35,6 +35,7 @@ J. Gheysen}
 \end{frame}
 
 \section{Introduction}
+\subsection{Introduction}
 \begin{frame}{Introduction}
 	\begin{alertblock}{Bande passante : définition globale}
 		Quantité de données qu'un réseau peut transporter par unité de temps
@@ -63,7 +64,7 @@ J. Gheysen}
    		\pause
    		\begin{minipage}[c]{.46\linewidth}
       		\includegraphics[scale=0.18]{bande_passante.jpg}
-      		\caption{Bande Passante}
+      		\caption{Bande Passante Disponible}
    		\end{minipage}
    		\pause
    		\begin{minipage}[c]{.46\linewidth}
@@ -77,17 +78,12 @@ J. Gheysen}
 \begin{itemize}
 	\item Différenciation entre liens de la couche données (1) et couche IP(2).
 	\begin{enumerate}
-		\item \textbf{Segment} : Lien physique point à point. %Etendre aux autres points dans l'article ?
-		\item \textbf{Hop (saut)} : Consiste en un ensemble de segments. %Connectés à travers switchs/bridges...
+		\item \textbf{Segment} %Etendre aux autres points dans l'article ?
+		\item \textbf{Hop (saut)} %Connectés à travers switchs/bridges...
 	\end{enumerate}
 	\vspace{10pt}
-	\item \textbf{Chemin end-to-end} : Lie un hôte à une source via une suite de sauts.
+	\item \textbf{Chemin end-to-end} : Lie une source à un récepteur via une suite de sauts.
 	\vspace{10pt}
-	\item Que mesurer ? Dans quelle situation ? 
-	\begin{itemize}
-		\item \textbf{Lien unique (hop)} : Capacité, Bande Passante.
-		\item \textbf{Chemin} : Capacité, Bande Passante, Bulk-Transfert-Capacity.
-	\end{itemize}
 \end{itemize}
 \end{frame}
 
@@ -361,12 +357,14 @@ J. Gheysen}
 		$$ D = \frac{(N-1)L}{\Delta_R(N)}$$
 	\end{block}
 Exemple :
-\begin{itemize}
-\item Chemin de deux hops avec $C_1 < C_0$
-\item {\color{red}Trafic extérieur} de taux $R_C < C_1 < C_0$ sur 2\textsuperscript{ème} lien
-\end{itemize} 
-\vspace{10pt}
-		$$ E[D] = \frac{(N-1)L}{\Delta_2} =  \frac{C_1}{1+\frac{R_C}{C_0}} < C_1$$
+\begin{center}
+	\begin{tabular}{cc}
+	$ \Delta_{1} = \frac{(N-1)L}{C_{0}}$ & $ \Delta_{2} = \frac{(N-1)L + X_{C}}{C_{1}}$ \\
+	\end{tabular}
+\end{center}
+	\begin{block}{Dispersion moyenne}
+		$$ E[D] = \frac{(N-1)L}{\Delta_2} =  \frac{C_1}{1+\frac{R_C}{C_0}} < C_1$$	
+	\end{block}
 
 \end{frame}
 
@@ -407,7 +405,7 @@ SLoPS basé sur une technique très simple en quelques étapes :
 \item Si $\Delta_{OWD}$ augmente alors R $>$ A sinon R $<$ A
 \pause
 \item On détermine la nouvelle valeur de R.
-\item On répète ces étapes jusqu'à ce que $R \approx 0.9 * A$
+\item On répète ces étapes jusqu'à ce que on ne détermine pas un changement significatif dans le OWD
 \end{itemize}
 \end{frame}
 
@@ -450,12 +448,12 @@ TOPP augmente de manière itérative ce taux.
 TOPP a aussi l'avantage de pouvoir calculer la capacité du chemin.
 
 \end{frame}
-\begin{frame}{Trains of Packet Pairs (TOPP)}{Fomulation 1/}
-Le taux initial vaut
+\begin{frame}{Trains of Packet Pairs (TOPP)}{Fomulation 1/2}
+Le taux initial coté envoyeur vaut
 $R_0 = \frac{L}{\Delta_s}$ où L est la taille du paquet envoyé et $\Delta_s$ est la dispersion des paquets.
 
-Soit un chemin de capacité C avec un bande passante disponible A et
-un taux de "Cross traffic" moyen $R_c$.
+Soit C la capacité du chemin, $R_C$ le traffic croisé sur le lien (C-A) et 
+$R_m$ le taux calculé du coté récepteur.
 
 Si $R_0$ est plus grand que A alors on obtient les équations suivantes:
 \begin{align}
@@ -467,7 +465,7 @@ R_m = \frac{R_0}{R_0 + R_c}C \\
 %Pour rappel R_0/R_m est la bande passante trouvée donc "fixe" ensuite on
 %continue d'augmenter R_0 pour comparé la différence entre l'estimation
 % de A et R_0 et ainsi determiner la valeur de la pente
-\begin{frame}{Trains of Packet Pairs (TOPP)}{Fomulation 2/}
+\begin{frame}{Trains of Packet Pairs (TOPP)}{Fomulation 2/2}
 TOPP estime la bande passante disponible au ratio maximum tel que 
 $R_0 \approx R_m$.
 
@@ -481,10 +479,12 @@ de la pente de $\frac{R_0}{R_m}$ par rapport à $R_0$.
 \end{frame}
 
 \section{Conclusion}
+\subsection{Conclusion}
 \begin{frame}{Conclusion}
 R. S. Prasad, M. Murray, C. Dovrolis, K. Claffy. Bandwidth estimation: metrics, measurement techniques, and tools. In IEEE Network, Volume 17, Issue 6, pages 27-35, 24 November 2003. 
 \end{frame}
 \section{Références}
+\subsection{Références}
 \begin{frame}{Références}
 Article :
 \begin{itemize}
